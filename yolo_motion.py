@@ -18,6 +18,7 @@ if __name__ == '__main__':
     low_bound = 360
     up_bound = 600
     mpGen = MPGenerator(video_name)
+    # todo: motion profile is static and save for env and save as '0033_mp.jpg'
     mp_img = mpGen.generate(low_bound, up_bound, '0033_mp.jpg')
     blank_img = np.zeros(mp_img.shape, dtype=np.uint8)
 
@@ -60,6 +61,7 @@ if __name__ == '__main__':
         t2 = time.time()
         print('Cost Time: %f' % (t2-t1))
         showImage = False
+        # todo: show detection for every img
         if showImage:
             try:
                 from skimage import io, draw
@@ -128,6 +130,7 @@ if __name__ == '__main__':
             tag, prob, pos = obj[0], obj[1], obj[2]
 
             # Paint the trajectory of objects which are in the sampling area of motion profile
+            # todo: log 存取 所有detection数据
             center_x, center_y, w, h = pos[0], pos[1], pos[2], pos[3]
             try:
                 if low_bound < center_y < up_bound and prob > 0.5 and time_idx < mp_img.shape[0]:
@@ -155,6 +158,7 @@ if __name__ == '__main__':
                     x1 = center_x - 0.5 * w if center_x - 0.5 * w > 0 else 0
                     x2 = center_x + 0.5 * w if center_x + 0.5 * w < mp_img.shape[1] else mp_img.shape[1]
                     rr, cc = draw.line(time_idx, int(x1), time_idx, int(x2))
+                    # tag lei
                     if tag == 'car':
                         blank_img[rr, cc, 0] = 255
                     elif tag == 'person':
